@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MyPosts</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	
+<div class="container" id="posts">
+	<div class="row">
+  <div class="leftcolumn">
+  	{% for e in UserPosts %}
+    <div class="card" id="cards">
+    	<button type="button" class="btn" ><a href="{{url_for('editpost',pid=e[3])}}"><i class="material-icons">border_color</i></a>edit</button> 
+    	
+      <button type="button" class="btn btn-danger"><a href="{{url_for('deletepost',pid=e[3])}}">Delete</a></button>
+
+
+      <h2>{{e[0]}}</h2>
+      <h5>{{e[1]}}</h5>
+      <p>{{e[2]}}</p>
+    </div>
+     {% endfor %}
+  </div>
+</div>
+
+</div>
+</body>
+</html>

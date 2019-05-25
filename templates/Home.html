@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HomePage</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+{% for e in UserPosts%}
+<script>
+  $(function(){
+          $('#upvote{{e[2]}}').click(function() {
+        var post_id = {{e[2]}};
+        $.ajax({
+            url: '/like',
+            data: {'post_id':post_id},
+            dataType : "JSON",
+            type: 'POST',
+            success: function(response) {
+              console.log("welcome");
+                $('#like{{e[2]}}').text(response['u']);
+                $('#dislike{{e[2]}}').text(response['d']);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+
+     $('#downvote{{e[2]}}').click(function() {
+        var post_id = {{e[2]}};
+        $.ajax({
+            url: '/dislike',
+            data: {'post_id':post_id},
+            type: 'POST',
+            dataType : "JSON",
+            success: function(response) {
+                $('#like{{e[2]}}').text(response['u']);
+                $('#dislike{{e[2]}}').text(response['d']);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+  });
+</script>
+ {% endfor %}
+
+      
+
+  <style type="text/css">
+  	#posts{
+  		background-color: yellow;
+  	}
+  	#cards{
+  		background-color: white;
+  	}
+  </style>
+</head>
+
+<body>
+	<h1>Welcome</h1>
+
+<div class="container">
+  <h3>Hello {{UserName}}</h3>
+  <ul class="list-inline">
+   <button type="button" class="btn" ><a href="addblog">Create Post</a></button> 
+   <button type="button" class="btn"><a href="myposts">My Posts</a></button>   
+   <button type="button" class="btn"><a href="signout">SignOut</a></button>
+  </ul>
+</div>
+
+
+<div class="container" id="posts">
+  <div class="row">
+  <div class="leftcolumn">
+    {% for e in UserPosts %}
+    <div class="card" id="cards">
+      <h2>{{e[0]}}</h2>
+      <h5>{{e[1]}}</h5>
+      <p>{{e[3]}}</p>
+
+        <button type="button" class="btn btn-info"><a href="{{url_for('comment',pid=e[2])}}">Comment</a></button>
+
+       <div class="likeblock pull-left">
+            
+            <a id="upvote{{e[2]}}" class="up"><i class="fa fa-thumbs-o-up"></i><span id="like{{e[2]}}">{{e[4]}}</span></a>
+            <a id="downvote{{e[2]}}" class="down"><i class="fa fa-thumbs-o-down"></i><span id="dislike{{e[2]}}">{{e[5]}}</span></a>
+        </div>
+     
+    </div>
+     {% endfor %}
+</div>
+
+</div>
+
+
+</body>
+</html>
